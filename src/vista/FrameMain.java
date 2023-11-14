@@ -27,38 +27,38 @@ public class FrameMain extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        menuValidar = new javax.swing.JMenu();
+        menuItemEntrar = new javax.swing.JMenuItem();
+        menuItemSalir = new javax.swing.JMenuItem();
+        menuVisualizar = new javax.swing.JMenu();
+        menuItemDetalle = new javax.swing.JMenuItem();
+        menuItemResumen = new javax.swing.JMenuItem();
+        menuAcercade = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jMenu1.setText("Validar");
+        menuValidar.setText("Validar");
 
-        jMenuItem1.setText("Entrar");
-        jMenu1.add(jMenuItem1);
+        menuItemEntrar.setText("Entrar");
+        menuValidar.add(menuItemEntrar);
 
-        jMenuItem2.setText("Salir");
-        jMenu1.add(jMenuItem2);
+        menuItemSalir.setText("Salir");
+        menuValidar.add(menuItemSalir);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(menuValidar);
 
-        jMenu2.setText("Visualizar");
+        menuVisualizar.setText("Visualizar");
 
-        jMenuItem3.setText("Detalle");
-        jMenu2.add(jMenuItem3);
+        menuItemDetalle.setText("Detalle");
+        menuVisualizar.add(menuItemDetalle);
 
-        jMenuItem4.setText("Resumen");
-        jMenu2.add(jMenuItem4);
+        menuItemResumen.setText("Resumen");
+        menuVisualizar.add(menuItemResumen);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(menuVisualizar);
 
-        jMenu3.setText("Acerca de");
-        jMenuBar1.add(jMenu3);
+        menuAcercade.setText("Acerca de");
+        jMenuBar1.add(menuAcercade);
 
         setJMenuBar(jMenuBar1);
 
@@ -112,13 +112,13 @@ public class FrameMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenu menuAcercade;
+    private javax.swing.JMenuItem menuItemDetalle;
+    private javax.swing.JMenuItem menuItemEntrar;
+    private javax.swing.JMenuItem menuItemResumen;
+    private javax.swing.JMenuItem menuItemSalir;
+    private javax.swing.JMenu menuValidar;
+    private javax.swing.JMenu menuVisualizar;
     // End of variables declaration//GEN-END:variables
 }
