@@ -12,8 +12,9 @@ public class Jefe {
     private String foto;
     private double sueldoAPagar;
 
-    public Jefe(int id, String usuario, String password, String foto) {
+    public Jefe(int id, String nombre, String usuario, String password, String foto) {
         this.id = id;
+        this.nombre = nombre;
         this.usuario = usuario;
         this.password = password;
         this.foto = foto;
