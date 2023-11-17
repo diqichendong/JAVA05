@@ -127,11 +127,6 @@ public class PanelResumen extends javax.swing.JPanel {
         infoSueldoAPagar.setText("0");
 
         jListEmpleados.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jListEmpleados.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
         jListEmpleados.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jListEmpleados);
 
