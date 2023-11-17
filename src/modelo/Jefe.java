@@ -12,13 +12,13 @@ public class Jefe {
     private String foto;
     private double sueldoAPagar;
 
-    public Jefe(int id, String nombre, String usuario, String password, String foto) {
+    public Jefe(int id, String nombre, String usuario, String password, String foto, double sueldoAPagar) {
         this.id = id;
         this.nombre = nombre;
         this.usuario = usuario;
         this.password = password;
         this.foto = foto;
-        this.sueldoAPagar = 0;
+        this.sueldoAPagar = sueldoAPagar;
     }
 
     public int getId() {

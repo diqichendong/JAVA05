@@ -4,17 +4,102 @@
  */
 package vista;
 
+import controlador.GestionBDComun;
+import java.sql.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import modelo.Jefe;
+
 /**
  *
  * @author AndJe
  */
 public class FrameMain extends javax.swing.JFrame {
+    
+    private Connection conexion;
+    
+    private PanelEntrar panelEntrar;
+    private PanelInicio panelInicio;
+    private PanelResumen panelResumen;
+    
+    private Jefe jefeValidado;
 
     /**
      * Creates new form FrameMain
      */
     public FrameMain() {
         initComponents();
+        
+        try {
+            this.conexion = GestionBDComun.getConexion();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Fallo al conectar a la base de datos.");
+        }
+        
+        panelInicio = new PanelInicio();
+        panelEntrar = new PanelEntrar(this, this.conexion);
+        panelResumen = new PanelResumen(this, this.conexion);
+        
+        menuVisualizar.setEnabled(false);
+        menuItemSalir.setEnabled(false);
+        
+        cambiarPanelInicio();
+    }
+    
+    /**
+     * Cambia al panel inicio
+     */
+    public void cambiarPanelInicio() {
+        this.setContentPane(panelInicio);
+        this.pack();
+    }
+    
+    /**
+     * Cambia al panel entrar
+     */
+    public void cambiarPanelEntrar() {
+        this.setContentPane(panelEntrar);
+        this.pack();
+    }
+    
+    /**
+     * Cambia al panel resumen
+     */
+    public void cambiarPanelResumen() {
+        this.setContentPane(panelResumen);
+        this.pack();
+    }
+    
+    /**
+     * Activar o desactivar menu item entrar
+     * @param b 
+     */
+    public void activarMenuItemEntrar(boolean b) {
+        menuItemEntrar.setEnabled(b);
+    }
+    
+    /**
+     * Activar o desactivar menu item salir
+     * @param b 
+     */
+    public void activarMenuItemSalir(boolean b) {
+        menuItemSalir.setEnabled(b);
+    }
+    
+    /**
+     * Activar o desactivar menu visualizar
+     * @param b 
+     */
+    public void activarMenuVisualizar(boolean b) {
+        menuVisualizar.setEnabled(b);
+    }
+    
+    public void setJefeValidado(Jefe j) {
+        this.jefeValidado = j;
+    }
+    
+    public Jefe getJefeValidado() {
+        return this.jefeValidado;
     }
 
     /**
@@ -36,18 +121,34 @@ public class FrameMain extends javax.swing.JFrame {
         menuAcercade = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         menuValidar.setText("Validar");
 
         menuItemEntrar.setText("Entrar");
+        menuItemEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemEntrarActionPerformed(evt);
+            }
+        });
         menuValidar.add(menuItemEntrar);
 
         menuItemSalir.setText("Salir");
+        menuItemSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemSalirActionPerformed(evt);
+            }
+        });
         menuValidar.add(menuItemSalir);
 
         jMenuBar1.add(menuValidar);
 
         menuVisualizar.setText("Visualizar");
+        menuVisualizar.setEnabled(false);
 
         menuItemDetalle.setText("Detalle");
         menuVisualizar.add(menuItemDetalle);
@@ -75,6 +176,27 @@ public class FrameMain extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void menuItemEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemEntrarActionPerformed
+        cambiarPanelEntrar();
+        
+        menuItemEntrar.setEnabled(false);
+        menuItemSalir.setEnabled(true);
+    }//GEN-LAST:event_menuItemEntrarActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        GestionBDComun.close(conexion);
+    }//GEN-LAST:event_formWindowClosing
+
+    private void menuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemSalirActionPerformed
+        cambiarPanelInicio();
+        
+        menuVisualizar.setEnabled(false);
+        menuItemSalir.setEnabled(false);
+        menuItemEntrar.setEnabled(true);
+        
+        this.jefeValidado = null;
+    }//GEN-LAST:event_menuItemSalirActionPerformed
 
     /**
      * @param args the command line arguments

@@ -1,22 +1,31 @@
 /*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Panel Entrar
  */
 package vista;
 
+import controlador.GestionBDValidar;
+import java.sql.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author Di Qi
  */
 public class PanelEntrar extends javax.swing.JPanel {
+    
+    private FrameMain padre;
+    private Connection conexion;
 
     /**
      * Creates new form PanelEntrar
      */
-    public PanelEntrar() {
+    public PanelEntrar(FrameMain padre, Connection c) {
         initComponents();
+        
+        this.padre = padre;
+        this.conexion = c;
+        
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,8 +39,8 @@ public class PanelEntrar extends javax.swing.JPanel {
         lblPassword = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
         txtPassword = new javax.swing.JPasswordField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnEntrar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         lblUsuario.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         lblUsuario.setText("Usuario:");
@@ -43,11 +52,21 @@ public class PanelEntrar extends javax.swing.JPanel {
 
         txtPassword.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton1.setText("Entrar");
+        btnEntrar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnEntrar.setText("Entrar");
+        btnEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEntrarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jButton2.setText("Cancelar");
+        btnCancelar.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -65,9 +84,9 @@ public class PanelEntrar extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(90, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(66, 66, 66)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(81, 81, 81))
         );
         layout.setVerticalGroup(
@@ -83,16 +102,44 @@ public class PanelEntrar extends javax.swing.JPanel {
                     .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(53, 53, 53)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(btnEntrar)
+                    .addComponent(btnCancelar))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        txtUsuario.setText("");
+        txtPassword.setText("");
+        this.padre.cambiarPanelInicio();
+        this.padre.activarMenuItemEntrar(true);
+        this.padre.activarMenuItemSalir(false);
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
+        // Obtener datos del panel
+        String usuario = txtUsuario.getText();
+        String password = new String(txtPassword.getPassword());
+        
+        // Validación con la base de datos
+        GestionBDValidar g = new GestionBDValidar(conexion);
+        try {
+            if (g.validar(usuario, password)) {
+                JOptionPane.showMessageDialog(this, "Validado correctamente.");
+                this.padre.setJefeValidado(g.getJefe());
+                this.padre.cambiarPanelResumen();
+            } else {
+                JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrecto.");
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Error de conexión con la base de datos.");
+        }
+    }//GEN-LAST:event_btnEntrarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JPasswordField txtPassword;
