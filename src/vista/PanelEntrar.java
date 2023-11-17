@@ -126,8 +126,13 @@ public class PanelEntrar extends javax.swing.JPanel {
         try {
             if (g.validar(usuario, password)) {
                 JOptionPane.showMessageDialog(this, "Validado correctamente.");
+                txtUsuario.setText("");
+                txtPassword.setText("");
                 this.padre.setJefeValidado(g.getJefe());
                 this.padre.cambiarPanelResumen();
+                this.padre.getPanelResumen().mostrarDatosJefe();
+                this.padre.getPanelResumen().mostrarEmpleados();
+                this.padre.activarMenuVisualizar(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Usuario y/o contraseña incorrecto.");
             }

@@ -39,8 +39,8 @@ ADD CONSTRAINT fk_empleados_jefe
     REFERENCES JEFES(Id)
     ON DELETE CASCADE;
 
-INSERT INTO JEFES VALUES (1, 'Di Qi', 'diqi', 'diqi', 'default.png', 0);
-INSERT INTO JEFES VALUES (2, 'Andrés', 'andres', 'andres', 'default.png', 0);
+INSERT INTO JEFES VALUES (1, 'Di Qi', 'diqi', 'diqi', 'default.jpg', 0);
+INSERT INTO JEFES VALUES (2, 'Andrés', 'andres', 'andres', 'default.jpg', 0);
 
 INSERT INTO EMPLEADOS VALUES (1, 1, 'Antonio', 3000, '1/10/2018');
 INSERT INTO EMPLEADOS VALUES (2, 1, 'Beatriz', 2000, '2/20/2018');

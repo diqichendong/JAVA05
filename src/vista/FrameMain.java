@@ -7,7 +7,6 @@ package vista;
 import controlador.GestionBDComun;
 import java.sql.*;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import modelo.Jefe;
 
 /**
@@ -100,6 +99,10 @@ public class FrameMain extends javax.swing.JFrame {
     
     public Jefe getJefeValidado() {
         return this.jefeValidado;
+    }
+    
+    public PanelResumen getPanelResumen() {
+        return this.panelResumen;
     }
 
     /**
