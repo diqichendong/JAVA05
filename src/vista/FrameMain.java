@@ -20,6 +20,7 @@ public class FrameMain extends javax.swing.JFrame {
     private PanelEntrar panelEntrar;
     private PanelInicio panelInicio;
     private PanelResumen panelResumen;
+    private PanelDetalle panelDetalle;
     
     private Jefe jefeValidado;
 
@@ -38,6 +39,7 @@ public class FrameMain extends javax.swing.JFrame {
         panelInicio = new PanelInicio();
         panelEntrar = new PanelEntrar(this, this.conexion);
         panelResumen = new PanelResumen(this, this.conexion);
+        panelDetalle = new PanelDetalle(this, this.conexion);
         
         menuVisualizar.setEnabled(false);
         menuItemSalir.setEnabled(false);
@@ -66,6 +68,14 @@ public class FrameMain extends javax.swing.JFrame {
      */
     public void cambiarPanelResumen() {
         this.setContentPane(panelResumen);
+        this.pack();
+    }
+    
+    /**
+     * 
+     */
+    public void cambiarPanelDDetalle(){
+        this.setContentPane(panelDetalle);
         this.pack();
     }
     
@@ -154,6 +164,11 @@ public class FrameMain extends javax.swing.JFrame {
         menuVisualizar.setEnabled(false);
 
         menuItemDetalle.setText("Detalle");
+        menuItemDetalle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemDetalleActionPerformed(evt);
+            }
+        });
         menuVisualizar.add(menuItemDetalle);
 
         menuItemResumen.setText("Resumen");
@@ -200,6 +215,11 @@ public class FrameMain extends javax.swing.JFrame {
         
         this.jefeValidado = null;
     }//GEN-LAST:event_menuItemSalirActionPerformed
+
+    private void menuItemDetalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemDetalleActionPerformed
+        cambiarPanelDDetalle();
+        panelDetalle.inicializar();
+    }//GEN-LAST:event_menuItemDetalleActionPerformed
 
     /**
      * @param args the command line arguments
