@@ -52,7 +52,7 @@ public class PanelResumen extends javax.swing.JPanel {
         infoNombre.setText(jefeValidado.getNombre());
         infoSueldoAPagar.setText(jefeValidado.getSueldoAPagar() + "");
 
-        ImageIcon imageIcon = new ImageIcon("./src/fotos/" + jefeValidado.getFoto());
+        ImageIcon imageIcon = new ImageIcon("./src/images/" + jefeValidado.getFoto());
         imageIcon = new ImageIcon(imageIcon.getImage()
                 .getScaledInstance(imagenBox.getWidth(), imagenBox.getHeight(), Image.SCALE_SMOOTH));
         imagenBox.setIcon(imageIcon);
