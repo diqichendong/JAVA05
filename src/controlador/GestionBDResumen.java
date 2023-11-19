@@ -23,7 +23,7 @@ public class GestionBDResumen {
         this.conexion = conexion;
         this.jefe = jefe;
     }
-
+    
     /**
      * Obterner una lista de empleados de un jefe
      * @return lista
@@ -57,7 +57,7 @@ public class GestionBDResumen {
      * @return sueldo a pagar
      * @throws SQLException 
      */
-    public double actualizarSueldoAPagar(List<Empleado> lista) throws SQLException {
+        public double actualizarSueldoAPagar(List<Empleado> lista) throws SQLException {
         double sueldoTotal = 0;
         for (Empleado e : lista) {
             sueldoTotal += e.getSueldo();

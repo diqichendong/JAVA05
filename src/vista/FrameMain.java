@@ -172,6 +172,11 @@ public class FrameMain extends javax.swing.JFrame {
         menuVisualizar.add(menuItemDetalle);
 
         menuItemResumen.setText("Resumen");
+        menuItemResumen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemResumenActionPerformed(evt);
+            }
+        });
         menuVisualizar.add(menuItemResumen);
 
         jMenuBar1.add(menuVisualizar);
@@ -220,6 +225,10 @@ public class FrameMain extends javax.swing.JFrame {
         cambiarPanelDDetalle();
         panelDetalle.inicializar();
     }//GEN-LAST:event_menuItemDetalleActionPerformed
+
+    private void menuItemResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemResumenActionPerformed
+        cambiarPanelResumen();
+    }//GEN-LAST:event_menuItemResumenActionPerformed
 
     /**
      * @param args the command line arguments
