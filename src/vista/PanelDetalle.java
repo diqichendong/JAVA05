@@ -5,6 +5,7 @@
 package vista;
 
 import controlador.GestionBDComun;
+import controlador.GestionBDDetalle;
 import java.sql.*;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -23,6 +24,8 @@ public class PanelDetalle extends javax.swing.JPanel {
 
     private FrameMain padre;
     private Connection conexion;
+    private GestionBDDetalle g;
+    private Jefe jfValid;
     
     private ResultSet rs;
     /**
@@ -91,6 +94,11 @@ public class PanelDetalle extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnPrimero.setText("Primero");
         btnPrimero.addActionListener(new java.awt.event.ActionListener() {
@@ -99,7 +107,7 @@ public class PanelDetalle extends javax.swing.JPanel {
             }
         });
 
-        btnUltimo.setText("Ultimo");
+        btnUltimo.setText("Último");
         btnUltimo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUltimoActionPerformed(evt);
@@ -226,25 +234,49 @@ public class PanelDetalle extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnUltimoActionPerformed
 
-    // hacer if(rs.next)
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        try {                                           
+            String oldSueldo = ""+rs.getDouble(4);
+            if(!txSueldo.getText().equals(oldSueldo) ){
+                g = new GestionBDDetalle(conexion ,jfValid);
+                try {
+                    double newSuedlo = Double.parseDouble(txSueldo.getText());
+                    g.actualizarSueldo(rs.getInt(1),newSuedlo);
+                    // aunque actualicemos el valor, en nuestro ResultSet aun tenemos el valor anterior. Hay q actualizar.
+                    inicializar();
+                    JOptionPane.showMessageDialog(this, "Actualizado sueldo");
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(this, "Error al modificar el sueldo.");
+                } catch (NumberFormatException e){
+                    JOptionPane.showMessageDialog(this, "Error, nuevo sueldo no es double.");
+                }
+                try {
+                    fillBoxes(rs);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanelDetalle.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else
+                JOptionPane.showMessageDialog(this, "No se ha modificado nada.");
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelDetalle.class.getName()).log(Level.SEVERE, null,ex);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    //lo llamamos en el jframe
     public void inicializar(){
-        Jefe jefe = padre.getJefeValidado();
-        String sql = "SELECT * FROM EMPLEADOS WHERE Id_jefe ="+jefe.getId();
+        jfValid = padre.getJefeValidado();
+        g = new GestionBDDetalle(conexion ,jfValid);
         try {
-            Statement stm = GestionBDComun.getStatementDetalle(conexion);
-            ResultSet rsAux = stm.executeQuery(sql);
-            if(rsAux.next()){
-                rs = rsAux;
+            rs = g.inicializar();
+            if(rs != null){
                 setEnabledButons(true);
-                rs.first();
                 btnAnterior.setEnabled(false);
                 fillBoxes(rs);
             }else{
                 setEnabledButons(false);
             }
         } catch (SQLException ex) {
-            //Logger.getLogger(PanelDetalle.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this, "Error buscando empleados del jefe "+jefe.getNombre());
+            Logger.getLogger(PanelDetalle.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
