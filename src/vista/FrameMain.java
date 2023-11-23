@@ -182,6 +182,11 @@ public class FrameMain extends javax.swing.JFrame {
         jMenuBar1.add(menuVisualizar);
 
         menuAcercade.setText("Acerca de");
+        menuAcercade.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuAcercadeMouseClicked(evt);
+            }
+        });
         jMenuBar1.add(menuAcercade);
 
         setJMenuBar(jMenuBar1);
@@ -231,6 +236,11 @@ public class FrameMain extends javax.swing.JFrame {
         panelResumen.mostrarDatosJefe();
         panelResumen.mostrarEmpleados();
     }//GEN-LAST:event_menuItemResumenActionPerformed
+
+    private void menuAcercadeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuAcercadeMouseClicked
+        JDialogInfo dialog = new JDialogInfo(this,true);
+        dialog.setVisible(true);
+    }//GEN-LAST:event_menuAcercadeMouseClicked
 
     /**
      * @param args the command line arguments

@@ -11,9 +11,11 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.GregorianCalendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import modelo.Empleado;
 import modelo.Jefe;
 
 /**
@@ -27,7 +29,6 @@ public class PanelDetalle extends javax.swing.JPanel {
     private GestionBDDetalle g;
     private Jefe jfValid;
     
-    private ResultSet rs;
     /**
      * Creates new form PanelDetalle
      */
@@ -188,10 +189,10 @@ public class PanelDetalle extends javax.swing.JPanel {
 
     private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
         try {
-            rs.next();
-            fillBoxes(rs);
+            g.avanzar();
+            fillBoxes(g.getCurrentEmpleado());
             btnAnterior.setEnabled(true);
-            if(rs.isLast()){
+            if(g.getResultSet().isLast()){
                 btnSiguiente.setEnabled(false);
             }
         } catch (SQLException ex) {
@@ -201,10 +202,10 @@ public class PanelDetalle extends javax.swing.JPanel {
 
     private void btnAnteriorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnteriorActionPerformed
         try {
-            rs.previous();
-            fillBoxes(rs);
+            g.retroceder();
+            fillBoxes(g.getCurrentEmpleado());
             btnSiguiente.setEnabled(true);
-            if(rs.isFirst()){
+            if(g.getResultSet().isLast()){
                 btnAnterior.setEnabled(false);
             }
         } catch (SQLException ex) {
@@ -214,8 +215,8 @@ public class PanelDetalle extends javax.swing.JPanel {
 
     private void btnPrimeroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrimeroActionPerformed
         try {
-            rs.first();
-            fillBoxes(rs);
+            g.setPrimero();
+            fillBoxes(g.getCurrentEmpleado());
             btnSiguiente.setEnabled(true);
             btnAnterior.setEnabled(false);
         } catch (SQLException ex) {
@@ -225,8 +226,8 @@ public class PanelDetalle extends javax.swing.JPanel {
 
     private void btnUltimoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUltimoActionPerformed
         try {
-            rs.last();
-            fillBoxes(rs);
+            g.setUltimo();
+            fillBoxes(g.getCurrentEmpleado());
             btnSiguiente.setEnabled(false);
             btnAnterior.setEnabled(true);
         } catch (SQLException ex) {
@@ -236,27 +237,29 @@ public class PanelDetalle extends javax.swing.JPanel {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         try {                                           
-            String oldSueldo = ""+rs.getDouble(4);
+            String oldSueldo = ""+g.getCurrentEmpleado().getSueldo();
             if(!txSueldo.getText().equals(oldSueldo) ){
-                g = new GestionBDDetalle(conexion ,jfValid);
                 try {
                     double newSuedlo = Double.parseDouble(txSueldo.getText());
-                    g.actualizarSueldo(rs.getInt(1),newSuedlo);
-                    // aunque actualicemos el valor, en nuestro ResultSet aun tenemos el valor anterior. Hay q actualizar.
-                    inicializar();
-                    JOptionPane.showMessageDialog(this, "Actualizado sueldo");
+                    g.actualizarSueldo(newSuedlo);
                 } catch (SQLException ex) {
                     JOptionPane.showMessageDialog(this, "Error al modificar el sueldo.");
                 } catch (NumberFormatException e){
                     JOptionPane.showMessageDialog(this, "Error, nuevo sueldo no es double.");
                 }
-                try {
-                    fillBoxes(rs);
-                } catch (SQLException ex) {
-                    Logger.getLogger(PanelDetalle.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                LocalDate localDate = datePicker1.getDate();
+                if(localDate != null){
+                    java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
+                    g.actualizarFecha(sqlDate);
                 }
-            }else
-                JOptionPane.showMessageDialog(this, "No se ha modificado nada.");
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(this, "Error al modificar el sueldo.");
+            } catch (NumberFormatException e){
+                JOptionPane.showMessageDialog(this, "Error, nuevo sueldo no es double.");
+            }
+            JOptionPane.showMessageDialog(this, "Datos actualizados");
         } catch (SQLException ex) {
             Logger.getLogger(PanelDetalle.class.getName()).log(Level.SEVERE, null,ex);
         }
@@ -267,11 +270,11 @@ public class PanelDetalle extends javax.swing.JPanel {
         jfValid = padre.getJefeValidado();
         g = new GestionBDDetalle(conexion ,jfValid);
         try {
-            rs = g.inicializar();
-            if(rs != null){
+            Empleado empleado = g.inicializar();
+            if(empleado != null){
                 setEnabledButons(true);
                 btnAnterior.setEnabled(false);
-                fillBoxes(rs);
+                fillBoxes(empleado);
             }else{
                 setEnabledButons(false);
             }
@@ -280,13 +283,12 @@ public class PanelDetalle extends javax.swing.JPanel {
         }
     }
     
-    private void fillBoxes(ResultSet rs) throws SQLException{
-        txId.setText(""+rs.getInt(1));
-        txJefe.setText(""+rs.getString(2));
-        txNombre.setText(""+rs.getString(3));
-        txSueldo.setText(""+rs.getDouble(4));
-        GregorianCalendar date = new GregorianCalendar();
-        date.setTime(rs.getDate(5));
+    private void fillBoxes(Empleado emp) throws SQLException{
+        txId.setText(""+emp.getId());
+        txJefe.setText(""+emp.getId_jefe());
+        txNombre.setText(""+emp.getNombre());
+        txSueldo.setText(""+emp.getSueldo());
+        GregorianCalendar date = emp.getFecha_incorp();
         datePicker1.setDate(turnDateIntoLocalDate(date));
     }
     
@@ -304,6 +306,7 @@ public class PanelDetalle extends javax.swing.JPanel {
         txJefe.setEditable(false);
         txNombre.setEditable(false);
         txSueldo.setEditable(true);
+        datePicker1.getComponentDateTextField().setEditable(true);
     }
     
     private LocalDate turnDateIntoLocalDate(GregorianCalendar date){
