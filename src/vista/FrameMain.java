@@ -228,6 +228,8 @@ public class FrameMain extends javax.swing.JFrame {
 
     private void menuItemResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemResumenActionPerformed
         cambiarPanelResumen();
+        panelResumen.mostrarDatosJefe();
+        panelResumen.mostrarEmpleados();
     }//GEN-LAST:event_menuItemResumenActionPerformed
 
     /**
