@@ -128,9 +128,9 @@ public class JDialogInfo extends javax.swing.JDialog {
     }
     
     public void setUpLabels(){
-        labelFecha.setText("Autores: Diqi y Andrés");
-        lblAutores.setText("Fecha: [Fecha de lanzamiento]");
-        lblVersion.setText("Versión: [Número de versión]");
+        labelFecha.setText("Autores: Di Qi y Andrés");
+        lblAutores.setText("Fecha: 24 de noviembre de 2023.");
+        lblVersion.setText("Versión: 1.0.");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
