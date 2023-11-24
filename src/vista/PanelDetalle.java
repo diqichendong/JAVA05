@@ -205,7 +205,7 @@ public class PanelDetalle extends javax.swing.JPanel {
             g.retroceder();
             fillBoxes(g.getCurrentEmpleado());
             btnSiguiente.setEnabled(true);
-            if(g.getResultSet().isLast()){
+            if(g.getResultSet().isFirst()){
                 btnAnterior.setEnabled(false);
             }
         } catch (SQLException ex) {
@@ -306,7 +306,7 @@ public class PanelDetalle extends javax.swing.JPanel {
         txJefe.setEditable(false);
         txNombre.setEditable(false);
         txSueldo.setEditable(true);
-        datePicker1.getComponentDateTextField().setEditable(true);
+        datePicker1.getComponentDateTextField().setEditable(false);
     }
     
     private LocalDate turnDateIntoLocalDate(GregorianCalendar date){
